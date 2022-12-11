@@ -1,4 +1,5 @@
 const RepositoryTypes = {
+	IWordRepository: Symbol.for('IWordRepository'),
 };
 
 
