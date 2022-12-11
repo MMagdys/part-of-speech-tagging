@@ -6,6 +6,7 @@ import TYPES from '@pbb/container/types';
 import BaseController from './BaseController';
 import { IWordRepository } from '@pbb/repositories/WordRepository';
 import ResponseUtils from '@pbb/utils/ResponseUtils';
+import { IWordMapper } from '@pbb/mappers/WordMapper';
 
 
 @controller('/v1/words')
@@ -13,6 +14,7 @@ export default class WordController extends BaseController {
     
     constructor(
         @inject(TYPES.IWordRepository) private wordRepository: IWordRepository,
+        @inject(TYPES.IWordMapper) private wordMapper: IWordMapper,
     ) {
         super();
     }
@@ -24,10 +26,15 @@ export default class WordController extends BaseController {
 
         const practiceWords = await this.wordRepository.getPracticeWords();
 
-        return ResponseUtils.ok(res, {
-            practiceWords
-        })
+        if(!practiceWords) {
+            return ResponseUtils.badRequest(res, 'Could not get practice list')
+        }
 
+        const mappedWords = await Promise.all(practiceWords.map((word) => this.wordMapper.toPracticeDto(word)))
+
+        return ResponseUtils.ok(res, {
+            words: mappedWords
+        })
     }
 
 
