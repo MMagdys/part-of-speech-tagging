@@ -1,0 +1,35 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r module-alias/register dist/server.js",
+    "seed": "node dist/seeds/gameSeed.js",
+    "test": "DOTENV_CONFIG_PATH=./tests/.env jest --setupFiles dotenv/config  --verbose --watch --runInBand --config jestconfig.json",
+    "dev": "nodemon -r module-alias/register dist/server.js",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jest": "^29.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "inversify": "^6.0.1",
+    "inversify-express-utils": "^6.4.3",
+    "module-alias": "^2.2.2",
+    "mongoose": "^6.5.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-jest": "^28.0.8"
+  },
+  "_moduleAliases": {
+    "@pbb": "dist"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.13"
+  }
+}
