@@ -4,7 +4,7 @@ import IWordModel, { PartOfSpeech, IWordDocument } from './IWord';
 
 
 const WordSchema: Schema = new Schema({
-    Word: {
+    word: {
         type: String,
         required: true,
     },

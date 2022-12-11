@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r module-alias/register dist/server.js",
-    "seed": "node dist/seeds/gameSeed.js",
+    "seed": "node dist/seeds/WordSeed.js",
     "test": "DOTENV_CONFIG_PATH=./tests/.env jest --setupFiles dotenv/config  --verbose --watch --runInBand --config jestconfig.json",
     "dev": "nodemon -r module-alias/register dist/server.js",
     "build": "tsc"
