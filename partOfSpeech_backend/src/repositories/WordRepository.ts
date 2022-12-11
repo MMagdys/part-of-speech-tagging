@@ -10,7 +10,10 @@ export interface PracticeWord {
 }
 
 export interface IWordRepository extends IRepository<IWordDocument> {
+
     getPracticeWords(): Promise<IWordDocument[] | null>;
+
+    checkPartOfSpeechForWord(wordId: string, userAnswer: string): Promise<Boolean | null>;
 }
 
 
@@ -66,6 +69,7 @@ export default class WordRepository extends Repository<IWordDocument> {
         
         const practiceWordIds = practiceWords.map((word) => word._id)
 
+        // find random
         const retrievedWords = await this.findMany({
             filter: { _id: { $nin: practiceWordIds } },
             limit: 6
@@ -78,5 +82,22 @@ export default class WordRepository extends Repository<IWordDocument> {
         practiceWords.push(...retrievedWords);
 
         return practiceWords;
+    }
+
+
+    public async checkPartOfSpeechForWord(wordId: string, userAnswer: string): Promise<Boolean | null> {
+
+        const retrievedWord = await this.findById(wordId);
+
+        if(!retrievedWord) {
+            return null;
+        }
+
+        if(retrievedWord.pos == userAnswer) {
+            return true;
+        }
+
+        return false;
+
     }
 }

@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { controller, httpGet, request, response } from 'inversify-express-utils';
+import { controller, httpGet, httpPost, request, response } from 'inversify-express-utils';
 import { inject } from 'inversify';
 
 import TYPES from '@pbb/container/types';
@@ -34,6 +34,24 @@ export default class WordController extends BaseController {
 
         return ResponseUtils.ok(res, {
             words: mappedWords
+        })
+    }
+
+
+    @httpPost('/checkPOS')
+    public async checkPartOfSpeech(@request() req: Request, @response() res: Response) {
+
+        const wordId = req.body.wordId;
+        const userAnswer = req.body.userAnswer;
+
+        const result = await this.wordRepository.checkPartOfSpeechForWord(wordId, userAnswer);
+
+        if(result == null) {
+            return ResponseUtils.badRequest(res, 'Could not check word')
+        }
+
+        return ResponseUtils.ok(res, {
+            result
         })
     }
 
