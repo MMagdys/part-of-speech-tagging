@@ -1,1 +1,2 @@
-import './WordController'
+import './WordController';
+import './RankController';

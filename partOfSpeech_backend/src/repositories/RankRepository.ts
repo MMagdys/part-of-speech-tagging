@@ -31,7 +31,6 @@ export default class RankRepository extends Repository<IRankDocument> {
         const rank = (lessThanCount / total) * 100;
 
         return rank;
-
     }
 
 }
