@@ -82,6 +82,11 @@ export default abstract class Repository<T extends Document> implements IReposit
 
         return instance.save();
     }
+
+    
+    public async count(filter: any): Promise<number> {
+        return this.model.countDocuments(filter);
+    }
     
 
 }
