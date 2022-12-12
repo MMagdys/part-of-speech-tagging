@@ -3,6 +3,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { Routes, Route, Link } from "react-router-dom";
 import AppHeader from './AppHeader';
+import Home from '../pages/Home';
+import { Container } from '@mui/material';
+import { PATHS } from '../routes/paths';
+import PosPractice from '../pages/pos/PosPractice';
 
 
 export default function AppLayout() {
@@ -11,12 +15,16 @@ export default function AppLayout() {
     <Box>
       <AppHeader />
       
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        
-        <Routes>
-            
-        </Routes> 
+      <Box component="main" >
+        <Container maxWidth="lg" >
+          <Toolbar />
+          
+          <Routes>
+              <Route path={PATHS.pos.practice} element={<PosPractice />} />
+              <Route path='*' element={<Home />} />
+          </Routes> 
+
+        </Container>
       </Box>
     </Box> 
   );
