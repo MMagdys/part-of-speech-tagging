@@ -2,6 +2,7 @@ import Word from '@pbb/models/word/Word';
 import { IWordDocument, PartOfSpeech } from '@pbb/models/word/IWord';
 import { injectable } from 'inversify';
 import Repository, { IRepository } from './Repository';
+import ArrayUtils from '@pbb/utils/ArrayUtils';
 
 
 export interface PracticeWord {
@@ -30,56 +31,55 @@ export default class WordRepository extends Repository<IWordDocument> {
 
         const practiceWords: IWordDocument[] = [];
 
-        const verbWord = await this.findOne({
-            filter: { pos: PartOfSpeech.VERB },
-        
-        });
-        if(!verbWord) {
+        const verbWord: IWordDocument[] = await this.model.aggregate([ 
+            { $match : {  pos: PartOfSpeech.VERB } },
+            { $sample: { size: 1 } }
+        ])
+        if(verbWord.length < 1) {
             return null;
         }
 
-        const nounWord = await this.findOne({
-            filter: { pos: PartOfSpeech.NOUN },
-            select: 'word'
-        });
-        if(!nounWord) {
+        const nounWord: IWordDocument[] = await this.model.aggregate([ 
+            { $match : {  pos: PartOfSpeech.NOUN } },
+            { $sample: { size: 1 } }
+        ])
+        if(nounWord.length < 1) {
             return null;
         }
 
-        const adjectiveWord = await this.findOne({
-            filter: { pos: PartOfSpeech.ADJECTIVE },
-            select: 'word'
-        });
-        if(!adjectiveWord) {
+        const adjectiveWord: IWordDocument[] = await this.model.aggregate([ 
+            { $match : {  pos: PartOfSpeech.ADJECTIVE } },
+            { $sample: { size: 1 } }
+        ])
+        if(adjectiveWord.length < 1) {
             return null;
         }
 
-        const adverbWord = await this.findOne({
-            filter: { pos: PartOfSpeech.ADVERB },
-            select: 'word'
-        });
-        if(!adverbWord) {
+        const adverbWord: IWordDocument[] = await this.model.aggregate([ 
+            { $match : {  pos: PartOfSpeech.ADVERB } },
+            { $sample: { size: 1 } }
+        ])
+        if(adverbWord.length < 1) {
             return null;
         }
 
-        practiceWords.push(verbWord);
-        practiceWords.push(nounWord);
-        practiceWords.push(adjectiveWord);
-        practiceWords.push(adverbWord);
-        
+        practiceWords.push(verbWord[0]);
+        practiceWords.push(nounWord[0]);
+        practiceWords.push(adjectiveWord[0]);
+        practiceWords.push(adverbWord[0]);
         const practiceWordIds = practiceWords.map((word) => word._id)
 
-        // find random
-        const retrievedWords = await this.findMany({
-            filter: { _id: { $nin: practiceWordIds } },
-            limit: 6
-        })
-
+        const retrievedWords = await this.model.aggregate([ 
+            { $match : {  _id: { $nin: practiceWordIds } } },
+            { $sample: { size: 6 } }
+        ])
+        
         if(!retrievedWords) {
             return null;
         }
 
         practiceWords.push(...retrievedWords);
+        ArrayUtils.shuffleArray(practiceWords)
 
         return practiceWords;
     }
