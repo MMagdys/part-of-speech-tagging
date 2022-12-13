@@ -6,6 +6,7 @@ import TYPES from '@pbb/container/types';
 import BaseController from './BaseController';
 import ResponseUtils from '@pbb/utils/ResponseUtils';
 import { IRankRepository } from '@pbb/repositories/RankRepository';
+import RankValidator from '../validators/RankValidator';
 
 
 @controller('/v1/ranks')
@@ -18,8 +19,12 @@ export default class RankController extends BaseController {
     }
 
 
-    @httpPost('/')
+    @httpPost('/', ...RankValidator.rankScore)
     public async rankScore(@request() req: Request, @response() res: Response) {
+
+        if (!this.validateRequest(req, res)) {
+            return
+        }
 
         const score = req.body.score as number;
 

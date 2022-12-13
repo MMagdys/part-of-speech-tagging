@@ -7,6 +7,7 @@ import BaseController from './BaseController';
 import { IWordRepository } from '@pbb/repositories/WordRepository';
 import ResponseUtils from '@pbb/utils/ResponseUtils';
 import { IWordMapper } from '@pbb/mappers/WordMapper';
+import WordValidator from '../validators/WordValidator';
 
 
 @controller('/v1/words')
@@ -38,8 +39,12 @@ export default class WordController extends BaseController {
     }
 
 
-    @httpPost('/checkPOS')
+    @httpPost('/checkPOS', ...WordValidator.checkPOS)
     public async checkPartOfSpeech(@request() req: Request, @response() res: Response) {
+
+        if (!this.validateRequest(req, res)) {
+            return
+        }
 
         const wordId = req.body.wordId;
         const userAnswer = req.body.userAnswer;
