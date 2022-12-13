@@ -1,0 +1,12 @@
+{
+  "transform": {
+    "^.+\\.(t|j)sx?$": "ts-jest"
+  },
+  "preset": "ts-jest",
+  "moduleNameMapper": {
+    "^@pbb/(.*)$": "<rootDir>/src/$1"
+  },
+  "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+  "modulePathIgnorePatterns": ["/tests/helpers/", "/tests/config"]
+}
