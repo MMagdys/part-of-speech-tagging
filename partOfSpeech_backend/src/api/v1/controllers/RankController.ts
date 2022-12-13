@@ -31,10 +31,7 @@ export default class RankController extends BaseController {
 
         return ResponseUtils.ok(res, {
             rank
-        })  
-
-
-
+        })
     }
 
 

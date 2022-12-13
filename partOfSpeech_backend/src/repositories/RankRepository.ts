@@ -29,8 +29,9 @@ export default class RankRepository extends Repository<IRankDocument> {
             return null;
         }
         const rank = (lessThanCount / total) * 100;
+        const roundedRank = Math.round(100 * rank) / 100;
 
-        return rank;
+        return roundedRank;
     }
 
 }
