@@ -3,6 +3,7 @@ import { IWordDocument, PartOfSpeech } from '@pbb/models/word/IWord';
 import { injectable } from 'inversify';
 import Repository, { IRepository } from './Repository';
 import ArrayUtils from '@pbb/utils/ArrayUtils';
+import config from '@pbb/config';
 
 
 export interface PracticeWord {
@@ -71,7 +72,7 @@ export default class WordRepository extends Repository<IWordDocument> {
 
         const retrievedWords = await this.model.aggregate([ 
             { $match : {  _id: { $nin: practiceWordIds } } },
-            { $sample: { size: 6 } }
+            { $sample: { size: config.app.practiceWordListLength - 4 } }
         ])
         
         if(!retrievedWords) {
