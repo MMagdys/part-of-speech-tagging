@@ -24,7 +24,7 @@ export default function PosPracticePage() {
     
     const navigate = useNavigate();
     
-    
+
     useEffect(() => {
         getPracticeList()
         .then((result: any) => {
@@ -35,7 +35,7 @@ export default function PosPracticePage() {
 
     useEffect(() => {
         if(finished == true) {
-            navigate(PATHS.pos.rank, { state: { score } })
+            navigate(PATHS.pos.rank, { state: { score, count: words.length } })
         }
     }, [finished])
 

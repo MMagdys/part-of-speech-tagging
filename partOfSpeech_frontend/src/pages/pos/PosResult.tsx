@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 
 import HomeIcon from '@mui/icons-material/Home';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { getRank } from '../../api/RankApi';
 
 
 export default function PosResult() {
     
-    const [score, setScore] = useState<number | null>(null);
+    const [rank, setRank] = useState<number | null>(null);
     
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -26,8 +27,12 @@ export default function PosResult() {
     }
 
     useEffect(() => {
-        if(state && state.score) {
-            setScore(state.score);
+        if(state && state.score && state.count) {
+            const finalScore = (state.score / state.count) * 100;
+            getRank(finalScore)
+            .then((result: any) => {
+               setRank(result.rank);
+            })
         }
     }, [])
 
@@ -61,7 +66,7 @@ export default function PosResult() {
             sx={{ margin: '2rem' }}
         >
             <Typography variant='h5' align="center" >
-            {score}
+            {rank}
             </Typography>
         </Box>
 
