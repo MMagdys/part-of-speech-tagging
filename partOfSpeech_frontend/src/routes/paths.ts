@@ -1,5 +1,5 @@
 export const PATHS = {
-    root: "",
+    root: "/",
     pos: {
         practice: '/pos/practice',
         rank: '/pos/rank',

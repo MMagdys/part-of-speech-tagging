@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import { Container } from '@mui/material';
 import { PATHS } from '../routes/paths';
 import PosPracticePage from '../pages/pos/PosPractice';
+import PosResultPage from '../pages/pos/PosResult';
 
 
 export default function AppLayout() {
@@ -21,6 +22,7 @@ export default function AppLayout() {
           
           <Routes>
               <Route path={PATHS.pos.practice} element={<PosPracticePage />} />
+              <Route path={PATHS.pos.rank} element={<PosResultPage />} />
               <Route path='*' element={<Home />} />
           </Routes> 
 

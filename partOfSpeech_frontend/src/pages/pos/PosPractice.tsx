@@ -8,6 +8,7 @@ import Loading from '../../components/Loading';
 import { PracticeWord } from '../../models/Word';
 import AnswerFeedbackSnackBar from '../../components/AnswerFeedbackSnackBar';
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../routes/paths';
 
 
 export default function PosPracticePage() {
@@ -19,8 +20,10 @@ export default function PosPracticePage() {
     const [open, setOpen] = React.useState(false);
     const [answer, setAnswer] = React.useState(false);
     const [score, setScore] = React.useState(0);
+    const [finished, setFinished] = React.useState(false);
     
     const navigate = useNavigate();
+    
     
     useEffect(() => {
         getPracticeList()
@@ -28,6 +31,14 @@ export default function PosPracticePage() {
             setWords(result.words)
         })
     }, [])
+
+
+    useEffect(() => {
+        if(finished == true) {
+            navigate(PATHS.pos.rank, { state: { score } })
+        }
+    }, [finished])
+
 
     const handleChoiceClick = (value: string) => {
 
@@ -39,24 +50,22 @@ export default function PosPracticePage() {
         })
         .then((res: any) => {
             if(res.result == true) {
-                setScore((oldScore) => oldScore + 1);
+                setScore((oldScore) => { return oldScore + 1 });
             }
             setAnswer(res.result)
-            setOpen(true)
+            setOpen(true);
+
+            const newProgress = ((current + 1) / words.length ) * 100;
+            setProgress(newProgress);
+    
+            if(current + 1 >= words.length) {
+                setFinished(true)
+                return
+            }
+    
+            setCurrent((old) => old + 1);
+            setDisable(false)
         })
-        
-        const newProgress = ((current + 1) / words.length ) * 100;
-        setProgress(newProgress);
-
-        if(current + 1 >= words.length) {
-            console.log("done");
-            navigate("/", { state: { score } })
-            return
-        }
-
-        setCurrent((old) => old + 1);
-        setDisable(false)
-
     }
 
 
